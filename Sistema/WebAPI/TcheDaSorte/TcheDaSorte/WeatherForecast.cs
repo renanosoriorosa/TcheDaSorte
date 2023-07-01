@@ -1,4 +1,4 @@
-namespace TcheDaSorte
+namespace TS.API
 {
     public class WeatherForecast
     {

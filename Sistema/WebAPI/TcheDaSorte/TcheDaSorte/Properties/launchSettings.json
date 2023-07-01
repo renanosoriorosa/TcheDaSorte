@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "TcheDaSorte": {
+    "TS.API": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

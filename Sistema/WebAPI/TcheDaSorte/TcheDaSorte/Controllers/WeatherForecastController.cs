@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace TcheDaSorte.Controllers
+namespace TS.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
