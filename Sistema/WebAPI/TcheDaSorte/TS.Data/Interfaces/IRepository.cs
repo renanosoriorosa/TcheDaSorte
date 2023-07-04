@@ -9,7 +9,7 @@ namespace TS.Data.Interfaces
         Task<TEntity> ObterPorId(int id);
         Task<List<TEntity>> ObterTodos();
         Task Atualizar(TEntity entity);
-        Task Remover(int id);
+        Task Remover(TEntity entity);
         Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate);
         Task<int> SaveChanges();
     }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TS.Data.Repository
 {
-    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, new()
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
         protected readonly TSContext _context;
         protected readonly DbSet<TEntity> DbSet;
@@ -44,9 +44,9 @@ namespace TS.Data.Repository
             await SaveChanges();
         }
 
-        public virtual async Task Remover(int id)
+        public virtual async Task Remover(TEntity entity)
         {
-            DbSet.Remove(new TEntity { Id = id });
+            DbSet.Remove(entity);
             await SaveChanges();
         }
 

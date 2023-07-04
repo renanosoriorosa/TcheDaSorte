@@ -7,6 +7,7 @@ namespace TS.Model.Models
     {
         public int Id { get; set; }
 
+
         [NotMapped]
         public ValidationResult ValidationResult { get; protected set; }
 
