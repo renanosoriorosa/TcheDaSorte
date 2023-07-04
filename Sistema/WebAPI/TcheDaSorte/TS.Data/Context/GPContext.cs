@@ -25,8 +25,8 @@ namespace TS.Data.Context
         }
 
 
-        //public DbSet<Produto> Produto { get; set; }
-        //public DbSet<Estoque> Estoque { get; set; }
-        //public DbSet<Recebimento> Recebimento { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Premio> Premio { get; set; }
+        public DbSet<Cartela> Cartela { get; set; }
     }
 }

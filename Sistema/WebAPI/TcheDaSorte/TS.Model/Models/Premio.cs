@@ -29,18 +29,12 @@ namespace TS.Model.Models
         {
         }
 
-        public Premio(DateTime dataEnvento, double valorPremio)
+        public Premio(string codigo, DateTime dataEnvento, double valorPremio)
         {
+            Codigo = codigo;
             DataEnvento = dataEnvento;
             ValorPremio = valorPremio;
-            GerarCodigo();
             Status = PremioStatusEnum.Criado;
-        }
-
-        public void GerarCodigo()
-        {
-            Random numAleatorio = new Random();
-            Codigo = numAleatorio.Next(99999999).ToString();
         }
 
         public override bool EhValido()

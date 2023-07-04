@@ -33,7 +33,7 @@ namespace TS.Model.Models
 
         public override bool EhValido()
         {
-            ValidationResult = new UsuarioValidation().Validate(this);
+            ValidationResult = new CartelaValidation().Validate(this);
             return ValidationResult.IsValid;
         }
     }
