@@ -46,6 +46,10 @@ namespace TS.Core.Services
             await _UsuarioRepository.Remover(obj);
         }
 
+        public async Task<UsuarioViewModel> ObterPorIdIdentity(string idIdentity)
+        {
+            return _mapper.Map<UsuarioViewModel>(await _UsuarioRepository.ObterUsuarioPorIdIdentity(idIdentity));
+        }
 
         public async Task<UsuarioViewModel> ObterPorId(int id)
         {

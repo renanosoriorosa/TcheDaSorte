@@ -10,6 +10,7 @@ namespace TS.Core.Interfaces
         Task Remover(int id);
         Task RemoverPorIdIdentity(string idIdentity);
         Task<UsuarioViewModel> ObterPorId(int id);
+        Task<UsuarioViewModel> ObterPorIdIdentity(string idIdentity);
         Task<List<UsuarioViewModel>> ObterTodos();
     }
 }

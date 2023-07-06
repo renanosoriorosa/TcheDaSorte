@@ -109,15 +109,26 @@ namespace TS.API.Controllers.V1
                 return CustomResponse();
             }
 
-            var user = await _userManager.FindByEmailAsync(emailUsuario);
+            var userIdentity = await _userManager.FindByEmailAsync(emailUsuario);
 
-            if (user == null)
+            if (userIdentity == null)
             {
                 NotificarErro($"O usuário {emailUsuario} não foi encontrado.");
                 return CustomResponse();
             }
 
-            return CustomResponse(user);
+            var usuario = await _usuarioService.ObterPorIdIdentity(userIdentity.Id);
+
+            if (usuario == null)
+            {
+                NotificarErro($"O usuário {userIdentity.Id} não foi encontrado.");
+                return CustomResponse();
+            }
+
+            usuario.Email = userIdentity.Email;
+            usuario.IndentityId = userIdentity.Id;
+
+            return CustomResponse(usuario);
         }
 
         [HttpDelete(Name = "Remover")]

@@ -10,7 +10,9 @@ namespace TS.ViewModels.ViewModels
         [Required]
         [StringLength(15, MinimumLength = 3)]
         public string Nome { get; set; }
-        public Guid IndentityId { get; set; }
+        public string IndentityId { get; set; }
         public bool Ativo { get; set; }
+        public string Email { get; set; }
+
     }
 }

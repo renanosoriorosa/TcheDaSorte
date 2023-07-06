@@ -6,6 +6,9 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using TS.API.Extensions;
 using TS.API.Interfaces;
+using TS.Core.Interfaces;
+using TS.Core.Notificacoes;
+using TS.Core.Services;
 using TS.Data.Context;
 using TS.Data.Interfaces;
 using TS.Data.Repository;
@@ -18,7 +21,10 @@ namespace TS.API.Configuration
         {
             services.AddScoped<TSContext>();
 
+            services.AddScoped<INotificador, Notificador>();
+
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<ICartelaRepository, CartelaRepository>();
             services.AddScoped<IPremioRepository, PremioRepository>();
             services.AddScoped<IUser, AspNetUser>();
