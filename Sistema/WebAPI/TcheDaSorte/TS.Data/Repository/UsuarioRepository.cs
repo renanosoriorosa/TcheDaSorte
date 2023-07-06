@@ -10,7 +10,7 @@ namespace TS.Data.Repository
     {
         public UsuarioRepository(TSContext context) : base(context) { }
 
-        public async Task<Usuario> ObterUsuarioPorIdIdentity(Guid idIdentity)
+        public async Task<Usuario> ObterUsuarioPorIdIdentity(string idIdentity)
         {
             return await _context.Usuario
                 .Where(obj => obj.IndentityId == idIdentity)

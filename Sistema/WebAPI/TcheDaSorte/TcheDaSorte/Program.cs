@@ -16,7 +16,7 @@ builder.Services.AddIdentityConfig(builder.Configuration);
 
 builder.Services.AddJWTConfig(builder.Configuration);
 
-//builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddApiConfig();
 

@@ -5,6 +5,6 @@ namespace TS.Data.Interfaces
 {
     public interface IUsuarioRepository : IRepository<Usuario>
     {
-        Task<Usuario> ObterUsuarioPorIdIdentity(Guid tipo);
+        Task<Usuario> ObterUsuarioPorIdIdentity(string tipo);
     }
 }

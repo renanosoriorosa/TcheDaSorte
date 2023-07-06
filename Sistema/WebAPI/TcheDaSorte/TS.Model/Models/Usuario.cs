@@ -8,7 +8,7 @@ namespace TS.Model.Models
         [Required]
         [StringLength(15, MinimumLength = 3)]
         public string Nome { get; private set; }
-        public Guid IndentityId { get; private set; }
+        public string IndentityId { get; private set; }
         public bool Ativo { get; private set; }
 
         public ICollection<Cartela> Cartelas { get; }
@@ -17,7 +17,7 @@ namespace TS.Model.Models
         {
         }
 
-        public Usuario(string nome, Guid indentityId)
+        public Usuario(string nome, string indentityId)
         {
             Nome = nome;
             IndentityId = indentityId;
