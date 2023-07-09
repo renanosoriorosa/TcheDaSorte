@@ -7,5 +7,6 @@ namespace TS.Data.Interfaces
     {
         Task<Premio> ObterPorCodigo(string codigo);
         Task<bool> CodigoExistente(string codigo);
+        Task<List<Premio>> ObterPremiosDisponiveisAsNoTracking();
     }
 }

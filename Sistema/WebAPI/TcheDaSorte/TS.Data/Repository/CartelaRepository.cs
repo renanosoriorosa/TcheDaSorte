@@ -16,5 +16,12 @@ namespace TS.Data.Repository
                 .Where(obj => obj.PremioId == idPremio)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<List<Cartela>> ObterTodosPorPremioId(int idPremio)
+        {
+            return await _context.Cartela
+                .Where(obj => obj.PremioId == idPremio)
+                .ToListAsync();
+        }
     }
 }

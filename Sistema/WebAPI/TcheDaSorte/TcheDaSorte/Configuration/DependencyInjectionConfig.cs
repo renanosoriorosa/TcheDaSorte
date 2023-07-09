@@ -26,7 +26,9 @@ namespace TS.API.Configuration
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<ICartelaRepository, CartelaRepository>();
+            services.AddScoped<ICartelaService, CartelaService>();
             services.AddScoped<IPremioRepository, PremioRepository>();
+            services.AddScoped<IPremioService, PremioService>();
             services.AddScoped<IUser, AspNetUser>();
 
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();

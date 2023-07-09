@@ -1,4 +1,5 @@
 ﻿using TS.Model.Models;
+using TS.ViewModels.ViewModels;
 
 namespace TS.Core.Interfaces
 {
@@ -8,5 +9,6 @@ namespace TS.Core.Interfaces
         Task Atualizar(Premio premio);
         Task Remover(int id);
         Task<bool> CodigoExistente(string codigo);
+        Task<List<PremioViewModel>> ObterPremiosDisponiveisAsNoTracking();
     }
 }

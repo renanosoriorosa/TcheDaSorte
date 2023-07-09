@@ -9,6 +9,7 @@ namespace TS.API.Configuration
         public AutomapperConfig()
         {
             CreateMap<Usuario, UsuarioViewModel>().ReverseMap();
+            CreateMap<Premio, PremioViewModel>().ReverseMap();
         }
     }
 }

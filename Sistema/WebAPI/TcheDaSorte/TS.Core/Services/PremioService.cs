@@ -49,5 +49,10 @@ namespace TS.Core.Services
         {
             _PremioRepository?.Dispose();
         }
+
+        public async Task<List<PremioViewModel>> ObterPremiosDisponiveisAsNoTracking()
+        {
+            return _mapper.Map<List<PremioViewModel>>(await _PremioRepository.ObterPremiosDisponiveisAsNoTracking());
+        }
     }
 }

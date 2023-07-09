@@ -84,5 +84,15 @@ namespace TS.Core.Services
 
             return numeros;
         }
+
+        public async Task RemoverTodasAsCartelasDoPremio(int idPremio)
+        {
+            var cartelas = await _CartelaRepository.ObterTodosPorPremioId(idPremio);
+
+            foreach (var cartela in cartelas)
+            {
+                await Remover(cartela.Id);
+            }
+        }
     }
 }

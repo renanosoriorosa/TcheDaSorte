@@ -3,6 +3,7 @@ using TS.Data.Interfaces;
 using TS.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using TS.Model.Models;
+using GP.Models.Enums;
 
 namespace TS.Data.Repository
 {
@@ -21,6 +22,15 @@ namespace TS.Data.Repository
             return await _context.Premio
                 .Where(obj => obj.Codigo == codigo)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Premio>> ObterPremiosDisponiveisAsNoTracking()
+        {
+            return await _context.Premio
+                .Where(obj => obj.Status == PremioStatusEnum.Criado || 
+                obj.Status == PremioStatusEnum.Acumulado)
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

@@ -18,32 +18,25 @@ namespace TS.API.Controllers.V1
     [ApiController]
     [ApiVersion("1.0")]
     [Authorize]
-    //[ApiVersion("1.0", Deprecated = true)] FUTURO
     [Route("v{version:apiVersion}/[controller]/[action]")]
     public class PremioController : MainController
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly AppSettings _appSettings;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
         private readonly IPremioService _premioService;
+        private readonly ICartelaService _cartelaService;
 
-        public PremioController(SignInManager<IdentityUser> signInManager, 
-            UserManager<IdentityUser> userManager,
-            IOptions<AppSettings> appSettings, 
-            INotificador notificador, 
+        public PremioController(INotificador notificador,
             IUser user,
             IMapper mapper,
             IPremioService premioService,
+            ICartelaService cartelaService,
             ILogger<PremioController> logger) : base(notificador, user)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _appSettings = appSettings.Value;
             _logger = logger;
             _premioService = premioService;
             _mapper = mapper;
+            _cartelaService = cartelaService;
         }
 
         [HttpPost(Name = "Cadastrar")]
@@ -56,9 +49,34 @@ namespace TS.API.Controllers.V1
 
             await _premioService.Adicionar(premio);
 
+            await _cartelaService.CriarCartelasParaPremio(premio.Id, cadastroPremio.NumeroCartelas, cadastroPremio.PrecoCartela);
 
+            if (!OperacaoValida())
+            {
+                //remove as cartelas do premio
+                await _cartelaService.RemoverTodasAsCartelasDoPremio(premio.Id);
+
+                // remove o premio
+                await _premioService.Remover(premio.Id);
+            }
 
             return CustomResponse();
+        }
+
+        [HttpGet(Name = "ListaPremiosDisponiveis")]
+        public async Task<ActionResult> ListaPremiosDisponiveis()
+        {
+            var premios = await _premioService.ObterPremiosDisponiveisAsNoTracking();
+
+            return CustomResponse(premios);
+        }
+
+        [HttpGet("{idPremio:int}")]
+        public async Task<ActionResult> ObterPremio(int idPremio)
+        {
+            var premios = await _premioService.ObterPremiosDisponiveisAsNoTracking();
+
+            return CustomResponse(premios);
         }
     }
 }

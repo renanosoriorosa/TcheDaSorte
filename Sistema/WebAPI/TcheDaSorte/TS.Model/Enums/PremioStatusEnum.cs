@@ -4,6 +4,7 @@
     {
         Criado = 0,
         Cancelado = 1,
-        Sorteado = 2
+        Sorteado = 2,
+        Acumulado = 3
     };
 }

@@ -10,5 +10,6 @@ namespace TS.ViewModels.ViewModels
         public DateTime DataEvento { get; set; }
         public double ValorPremio { get; set; }
         public int NumeroCartelas { get; set; }
+        public double PrecoCartela { get; set; }
     }
 }
