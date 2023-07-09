@@ -25,6 +25,26 @@ namespace TS.Model.Models
         {
         }
 
+        public Cartela(int premioId, double preco, 
+            int primeiroNumero, 
+            int segundoNumero, 
+            int terceiroNumero, 
+            int quartoNumero, 
+            int quintoNumero)
+        {
+            GerarCodigo();
+            PremioId = premioId;
+            Preco = preco;
+            PrimeiroNumero = primeiroNumero;
+            SegundoNumero = segundoNumero;
+            TerceiroNumero = terceiroNumero;
+            QuartoNumero = quartoNumero;
+            QuintoNumero = quintoNumero;
+
+            Sorteada = false;
+            CompraAprovada = false;
+        }
+
         public void GerarCodigo()
         {
             Random numAleatorio = new Random();

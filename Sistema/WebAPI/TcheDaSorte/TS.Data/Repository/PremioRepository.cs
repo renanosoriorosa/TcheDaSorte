@@ -10,6 +10,12 @@ namespace TS.Data.Repository
     {
         public PremioRepository(TSContext context) : base(context) { }
 
+        public async Task<bool> CodigoExistente(string codigo)
+        {
+            return await _context.Premio
+                .AnyAsync(obj => obj.Codigo == codigo);
+        }
+
         public async Task<Premio> ObterPorCodigo(string codigo)
         {
             return await _context.Premio

@@ -11,6 +11,14 @@ namespace TS.Models.Models.Validations
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido")
                 .Length(8).WithMessage("O campo {PropertyName} precisa ter entre {MinLength} e {MaxLength} caracteres");
 
+            RuleFor(c => c.DataEnvento)
+                .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido")
+                .MustAsync(async (dataEnvento, context) =>
+                {
+                    return dataEnvento >= DateTime.Now;
+                })
+                .WithMessage("A data do evento precisa ter uma data futura.");
+
         }
     }
 }
