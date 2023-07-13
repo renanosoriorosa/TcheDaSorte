@@ -5,19 +5,20 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TS.API.Extensions;
 using TS.API.Interfaces;
-using TS.ViewModels.ViewModels;
+using TS.Model.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using TS.Core.Interfaces;
 using TS.Model.Models;
 using AutoMapper;
+using TS.Model.Interfaces;
 
 namespace TS.API.Controllers.V1
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Authorize]
+    //[Authorize]
     [Route("v{version:apiVersion}/[controller]/[action]")]
     public class PremioController : MainController
     {
@@ -49,6 +50,9 @@ namespace TS.API.Controllers.V1
 
             await _premioService.Adicionar(premio);
 
+            if (!OperacaoValida())
+                return CustomResponse();
+
             await _cartelaService.CriarCartelasParaPremio(premio.Id, cadastroPremio.NumeroCartelas, cadastroPremio.PrecoCartela);
 
             if (!OperacaoValida())
@@ -74,9 +78,12 @@ namespace TS.API.Controllers.V1
         [HttpGet("{idPremio:int}")]
         public async Task<ActionResult> ObterPremio(int idPremio)
         {
-            var premios = await _premioService.ObterPremiosDisponiveisAsNoTracking();
+            var premio = await _premioService.ObterPremioECartelasAsNoTracking(idPremio);
 
-            return CustomResponse(premios);
+            if (premio == null)
+                return SendBadRequest($"O prêmio com o id {idPremio} não foi encontrado.");
+
+            return CustomResponse(premio);
         }
     }
 }

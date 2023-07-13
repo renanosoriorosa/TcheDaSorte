@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TS.ViewModels.ViewModels
+namespace TS.Model.ViewModels
 {
     public class CadastroPremioViewModel
     {

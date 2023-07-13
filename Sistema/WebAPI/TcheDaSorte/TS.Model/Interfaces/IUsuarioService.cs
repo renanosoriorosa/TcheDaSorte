@@ -1,7 +1,7 @@
 ﻿using TS.Model.Models;
-using TS.ViewModels.ViewModels;
+using TS.Model.ViewModels;
 
-namespace TS.Core.Interfaces
+namespace TS.Model.Interfaces
 {
     public interface IUsuarioService : IDisposable
     {

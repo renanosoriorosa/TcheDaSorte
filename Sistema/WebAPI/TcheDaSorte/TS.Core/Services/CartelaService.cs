@@ -1,10 +1,9 @@
 ﻿using TS.Core.Interfaces;
-using TS.ViewModels.ViewModels;
+using TS.Model.Interfaces;
 using TS.Data.Interfaces;
 using TS.Models.Models.Validations;
 using AutoMapper;
 using TS.Model.Models;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace TS.Core.Services
 {

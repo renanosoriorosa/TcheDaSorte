@@ -1,14 +1,15 @@
 ﻿using TS.Model.Models;
-using TS.ViewModels.ViewModels;
+using TS.Model.ViewModels;
 
-namespace TS.Core.Interfaces
+namespace TS.Model.Interfaces
 {
     public interface IPremioService : IDisposable
     {
         Task Adicionar(Premio premio);
         Task Atualizar(Premio premio);
         Task Remover(int id);
-        Task<bool> CodigoExistente(string codigo);
+        bool CodigoExistente(string codigo);
         Task<List<PremioViewModel>> ObterPremiosDisponiveisAsNoTracking();
+        Task<PremioViewModel> ObterPremioECartelasAsNoTracking(int idPremio);
     }
 }

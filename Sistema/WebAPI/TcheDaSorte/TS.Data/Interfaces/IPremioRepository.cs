@@ -6,7 +6,8 @@ namespace TS.Data.Interfaces
     public interface IPremioRepository : IRepository<Premio>
     {
         Task<Premio> ObterPorCodigo(string codigo);
-        Task<bool> CodigoExistente(string codigo);
+        bool CodigoExistente(string codigo);
         Task<List<Premio>> ObterPremiosDisponiveisAsNoTracking();
+        Task<Premio> ObterPremioECartelasAsNoTracking(int idPremio);
     }
 }

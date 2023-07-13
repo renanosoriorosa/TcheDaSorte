@@ -11,7 +11,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TS.Data\TS.Data.csproj" />
     <ProjectReference Include="..\TS.Model\TS.Model.csproj" />
-    <ProjectReference Include="..\TS.ViewModel\TS.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

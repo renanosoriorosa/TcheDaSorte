@@ -1,6 +1,6 @@
 ﻿using TS.Model.Models;
 
-namespace TS.Core.Interfaces
+namespace TS.Model.Interfaces
 {
     public interface ICartelaService : IDisposable
     {

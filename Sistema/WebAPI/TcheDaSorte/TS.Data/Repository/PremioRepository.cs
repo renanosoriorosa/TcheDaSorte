@@ -11,10 +11,10 @@ namespace TS.Data.Repository
     {
         public PremioRepository(TSContext context) : base(context) { }
 
-        public async Task<bool> CodigoExistente(string codigo)
+        public bool CodigoExistente(string codigo)
         {
-            return await _context.Premio
-                .AnyAsync(obj => obj.Codigo == codigo);
+            return _context.Premio
+                .Any(obj => obj.Codigo == codigo);
         }
 
         public async Task<Premio> ObterPorCodigo(string codigo)
@@ -31,6 +31,15 @@ namespace TS.Data.Repository
                 obj.Status == PremioStatusEnum.Acumulado)
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public async Task<Premio> ObterPremioECartelasAsNoTracking(int idPremio)
+        {
+            return await _context.Premio
+                .Where(obj => obj.Id == idPremio)
+                .Include(obj => obj.Cartelas)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
     }
 }

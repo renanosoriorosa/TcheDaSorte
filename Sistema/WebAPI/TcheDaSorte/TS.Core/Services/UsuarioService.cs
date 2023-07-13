@@ -1,9 +1,10 @@
 ﻿using TS.Core.Interfaces;
-using TS.ViewModels.ViewModels;
+using TS.Model.ViewModels;
 using TS.Data.Interfaces;
 using TS.Models.Models.Validations;
 using AutoMapper;
 using TS.Model.Models;
+using TS.Model.Interfaces;
 
 namespace TS.Core.Services
 {

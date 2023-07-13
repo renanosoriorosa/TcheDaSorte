@@ -1,7 +1,8 @@
 ﻿using GP.Models.Enums;
 using System.ComponentModel.DataAnnotations;
+using TS.Model.Models;
 
-namespace TS.ViewModels.ViewModels
+namespace TS.Model.ViewModels
 {
     public class PremioViewModel
     {
@@ -23,5 +24,7 @@ namespace TS.ViewModels.ViewModels
         public int OitavoNumero { get; set; }
         public int NonoNumero { get; set; }
         public int DecimoNumero { get; set; }
+
+        public ICollection<CartelaViewModel> Cartelas { get; }
     }
 }

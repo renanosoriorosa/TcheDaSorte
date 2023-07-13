@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TS.ViewModels.ViewModels;
+using TS.Model.ViewModels;
 using TS.Model.Models;
 
 namespace TS.API.Configuration
@@ -10,6 +10,7 @@ namespace TS.API.Configuration
         {
             CreateMap<Usuario, UsuarioViewModel>().ReverseMap();
             CreateMap<Premio, PremioViewModel>().ReverseMap();
+            CreateMap<Cartela, CartelaViewModel>().ReverseMap();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace TS.ViewModels.ViewModels
+﻿namespace TS.Model.ViewModels
 {
     public class UserTokenViewModel
     {

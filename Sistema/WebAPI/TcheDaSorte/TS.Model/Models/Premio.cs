@@ -1,5 +1,6 @@
 ﻿using GP.Models.Enums;
 using System.ComponentModel.DataAnnotations;
+using TS.Model.Interfaces;
 using TS.Models.Models.Validations;
 
 namespace TS.Model.Models
@@ -37,10 +38,10 @@ namespace TS.Model.Models
             Status = PremioStatusEnum.Criado;
         }
 
-        public override bool EhValido()
-        {
-            ValidationResult = new PremioValidation().Validate(this);
-            return ValidationResult.IsValid;
-        }
+        //public override bool EhValido(IPremioService iPremioService)
+        //{
+        //    ValidationResult = new PremioValidation(iPremioService).Validate(this);
+        //    return ValidationResult.IsValid;
+        //}
     }
 }

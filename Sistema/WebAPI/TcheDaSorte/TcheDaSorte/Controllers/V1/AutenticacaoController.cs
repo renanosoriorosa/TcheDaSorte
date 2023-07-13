@@ -5,12 +5,13 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TS.API.Extensions;
 using TS.API.Interfaces;
-using TS.ViewModels.ViewModels;
+using TS.Model.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using TS.Core.Interfaces;
 using TS.Model.Models;
+using TS.Model.Interfaces;
 
 namespace TS.API.Controllers.V1
 {

@@ -1,19 +1,34 @@
 ﻿using FluentValidation;
+using TS.Model.Interfaces;
 using TS.Model.Models;
 
 namespace TS.Models.Models.Validations
 {
     public class PremioValidation : AbstractValidator<Premio>
     {
-        public PremioValidation()
+        private readonly IPremioService premioService;
+
+        public PremioValidation(IPremioService premioService)
+        {
+            this.premioService = premioService;
+
+            Validar();
+        }
+
+        public void Validar ()
         {
             RuleFor(c => c.Codigo)
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido")
-                .Length(8).WithMessage("O campo {PropertyName} precisa ter entre {MinLength} e {MaxLength} caracteres");
+                .MaximumLength(8).WithMessage("O campo {PropertyName} precisa ter entre {MinLength} e {MaxLength} caracteres")
+                .Must(codigo =>
+                 {
+                     return !premioService.CodigoExistente(codigo);
+                 })
+                .WithMessage("O este código já existe");
 
             RuleFor(c => c.DataEnvento)
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido")
-                .MustAsync(async (dataEnvento, context) =>
+                .Must(dataEnvento =>
                 {
                     return dataEnvento >= DateTime.Now;
                 })
