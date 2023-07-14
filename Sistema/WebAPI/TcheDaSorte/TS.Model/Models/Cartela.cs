@@ -45,6 +45,30 @@ namespace TS.Model.Models
             CompraAprovada = false;
         }
 
+        public Cartela(int id, string codigo, int premioId, int? usuarioId, 
+            double preco,
+            bool sorteada, 
+            bool compraAprovada, 
+            int primeiroNumero, 
+            int segundoNumero, 
+            int terceiroNumero, 
+            int quartoNumero, 
+            int quintoNumero)
+        {
+            Id = id;
+            Codigo = codigo;
+            PremioId = premioId;
+            UsuarioId = usuarioId;
+            Preco = preco;
+            Sorteada = sorteada;
+            CompraAprovada = compraAprovada;
+            PrimeiroNumero = primeiroNumero;
+            SegundoNumero = segundoNumero;
+            TerceiroNumero = terceiroNumero;
+            QuartoNumero = quartoNumero;
+            QuintoNumero = quintoNumero;
+        }
+
         public void GerarCodigo()
         {
             Random numAleatorio = new Random();

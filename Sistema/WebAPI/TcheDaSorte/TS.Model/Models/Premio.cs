@@ -24,7 +24,7 @@ namespace TS.Model.Models
         public int NonoNumero { get; private set; }
         public int DecimoNumero { get; private set; }
 
-        public ICollection<Cartela> Cartelas { get; }
+        public virtual ICollection<Cartela> Cartelas { get; }
 
         protected Premio()
         {

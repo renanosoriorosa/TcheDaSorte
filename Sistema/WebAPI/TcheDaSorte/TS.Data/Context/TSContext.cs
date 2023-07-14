@@ -17,9 +17,8 @@ namespace TS.Data.Context
                     .Where(p => p.ClrType == typeof(string))))
                 property.SetColumnType("varchar(200)");
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(TSContext).Assembly);
-
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
 
             base.OnModelCreating(modelBuilder);
         }

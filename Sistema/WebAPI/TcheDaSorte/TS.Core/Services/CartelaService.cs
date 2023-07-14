@@ -4,6 +4,8 @@ using TS.Data.Interfaces;
 using TS.Models.Models.Validations;
 using AutoMapper;
 using TS.Model.Models;
+using TS.Model.ViewModels;
+using TS.Data.Repository;
 
 namespace TS.Core.Services
 {
@@ -92,6 +94,11 @@ namespace TS.Core.Services
             {
                 await Remover(cartela.Id);
             }
+        }
+
+        public async Task<List<CartelaViewModel>> ObterTodosPorPremioId(int idPremio)
+        {
+            return _mapper.Map<List<CartelaViewModel>>(await _CartelaRepository.ObterTodosPorPremioId(idPremio));
         }
     }
 }

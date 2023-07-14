@@ -71,7 +71,7 @@ namespace TS.Data.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Cartela");
+                    b.ToTable("Cartela", (string)null);
                 });
 
             modelBuilder.Entity("TS.Model.Models.Premio", b =>
@@ -128,7 +128,7 @@ namespace TS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Premio");
+                    b.ToTable("Premio", (string)null);
                 });
 
             modelBuilder.Entity("TS.Model.Models.Usuario", b =>
@@ -152,7 +152,7 @@ namespace TS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuario", (string)null);
                 });
 
             modelBuilder.Entity("TS.Model.Models.Cartela", b =>

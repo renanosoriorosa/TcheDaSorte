@@ -27,6 +27,14 @@ namespace TS.Data.Repository
             return await DbSet.FindAsync(id);
         }
 
+        public virtual async Task<TEntity> ObterPorIdAsNoTracking(int id)
+        {
+            return await DbSet
+                .Where(obj => obj.Id == id)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
         public virtual async Task<List<TEntity>> ObterTodos()
         {
             return await DbSet.ToListAsync();

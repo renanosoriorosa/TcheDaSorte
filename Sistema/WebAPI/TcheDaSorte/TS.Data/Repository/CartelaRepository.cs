@@ -20,7 +20,22 @@ namespace TS.Data.Repository
         public async Task<List<Cartela>> ObterTodosPorPremioId(int idPremio)
         {
             return await _context.Cartela
-                .Where(obj => obj.PremioId == idPremio)
+                .Select(c => new Cartela
+                (
+                    c.Id,
+                    c.Codigo,
+                    c.PremioId,
+                    c.UsuarioId,
+                    c.Preco,
+                    c.Sorteada,
+                    c.CompraAprovada,
+                    c.PrimeiroNumero,
+                    c.SegundoNumero,
+                    c.TerceiroNumero,
+                    c.QuartoNumero,
+                    c.QuintoNumero
+                ))
+                .AsNoTracking()
                 .ToListAsync();
         }
     }

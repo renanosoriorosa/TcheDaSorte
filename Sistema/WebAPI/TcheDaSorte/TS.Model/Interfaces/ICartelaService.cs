@@ -1,4 +1,5 @@
 ﻿using TS.Model.Models;
+using TS.Model.ViewModels;
 
 namespace TS.Model.Interfaces
 {
@@ -10,5 +11,6 @@ namespace TS.Model.Interfaces
         Task RemoverTodasAsCartelasDoPremio(int idPremio);
         Task CriarCartelasParaPremio(int idPremio, int numeroCartelas, double preco);
         Cartela GerarCartelaRandomica(int idPremio, double preco);
+        Task<List<CartelaViewModel>> ObterTodosPorPremioId(int idPremio);
     }
 }

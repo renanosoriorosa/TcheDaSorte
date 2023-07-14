@@ -11,7 +11,7 @@ namespace TS.Model.Models
         public string IndentityId { get; private set; }
         public bool Ativo { get; private set; }
 
-        public ICollection<Cartela> Cartelas { get; }
+        public virtual ICollection<Cartela> Cartelas { get; }
 
         protected Usuario()
         {

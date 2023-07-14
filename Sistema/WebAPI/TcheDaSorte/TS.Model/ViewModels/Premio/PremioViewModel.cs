@@ -25,6 +25,6 @@ namespace TS.Model.ViewModels
         public int NonoNumero { get; set; }
         public int DecimoNumero { get; set; }
 
-        public ICollection<CartelaViewModel> Cartelas { get; }
+        public List<CartelaViewModel> Cartelas { get; set; }
     }
 }

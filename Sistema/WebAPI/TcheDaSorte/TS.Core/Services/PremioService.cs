@@ -60,5 +60,10 @@ namespace TS.Core.Services
         {
             return _mapper.Map<PremioViewModel>(await _PremioRepository.ObterPremioECartelasAsNoTracking(idPremio));
         }
+
+        public async Task<PremioViewModel> ObterPorIdAsNoTracking(int idPremio)
+        {
+            return _mapper.Map<PremioViewModel>(await _PremioRepository.ObterPorId(idPremio));
+        }
     }
 }

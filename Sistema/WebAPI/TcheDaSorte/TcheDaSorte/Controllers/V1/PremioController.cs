@@ -78,10 +78,12 @@ namespace TS.API.Controllers.V1
         [HttpGet("{idPremio:int}")]
         public async Task<ActionResult> ObterPremio(int idPremio)
         {
-            var premio = await _premioService.ObterPremioECartelasAsNoTracking(idPremio);
+            var premio = await _premioService.ObterPorIdAsNoTracking(idPremio);
 
             if (premio == null)
                 return SendBadRequest($"O prêmio com o id {idPremio} não foi encontrado.");
+
+            premio.Cartelas.AddRange(await _cartelaService.ObterTodosPorPremioId(idPremio));
 
             return CustomResponse(premio);
         }
