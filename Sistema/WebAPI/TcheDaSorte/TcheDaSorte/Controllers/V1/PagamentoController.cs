@@ -19,7 +19,7 @@ namespace TS.API.Controllers.V1
 {
     [ApiController]
     [ApiVersion("1.0")]
-    //[Authorize]
+    [Authorize]
     [Route("v{version:apiVersion}/[controller]/[action]")]
     public class PagamentoController : MainController
     {
@@ -28,6 +28,7 @@ namespace TS.API.Controllers.V1
         private readonly IPremioService _premioService;
         private readonly ICartelaService _cartelaService;
         private readonly IUsuarioService _usuarioService;
+        private readonly IPagamento _pagamentoService;
 
         public PagamentoController(INotificador notificador,
             IUser user,
@@ -35,6 +36,7 @@ namespace TS.API.Controllers.V1
             IPremioService premioService,
             ICartelaService cartelaService,
             IUsuarioService usuarioService,
+            IPagamento pagamentoService,
             ILogger<PagamentoController> logger) : base(notificador, user)
         {
             _logger = logger;
@@ -42,6 +44,7 @@ namespace TS.API.Controllers.V1
             _mapper = mapper;
             _cartelaService = cartelaService;
             _usuarioService = usuarioService;
+            _pagamentoService = pagamentoService;
         }
 
         [HttpPost(Name = "ComprarCartela")]
@@ -59,7 +62,13 @@ namespace TS.API.Controllers.V1
 
             cartela.ReservarCartela(usuario.Id);
 
+            await _cartelaService.Atualizar(cartela);
+
             //coloca na fila pra fazer a compra da cartela
+            if (!_pagamentoService.PublicarPagamento(cartela)) {
+                cartela.RemoverReserva();
+                await _cartelaService.Atualizar(cartela);
+            }
 
             return CustomResponse();
         }

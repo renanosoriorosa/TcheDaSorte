@@ -31,6 +31,7 @@ namespace TS.API.Configuration
             services.AddScoped<IPremioRepository, PremioRepository>();
             services.AddScoped<IPremioService, PremioService>();
             services.AddScoped<IUser, AspNetUser>();
+            services.AddScoped<IPagamento, PagamentoService>();
 
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
 

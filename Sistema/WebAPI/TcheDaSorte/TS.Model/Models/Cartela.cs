@@ -88,6 +88,11 @@ namespace TS.Model.Models
             this.UsuarioId = idUsuario;
         }
 
+        public void RemoverReserva()
+        {
+            this.UsuarioId = null;
+        }
+
         public override bool EhValido()
         {
             ValidationResult = new CartelaValidation().Validate(this);
