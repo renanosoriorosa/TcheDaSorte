@@ -75,6 +75,19 @@ namespace TS.Model.Models
             Codigo = numAleatorio.Next(99999999).ToString();
         }
 
+        public bool DisponivelPraCompra()
+        {
+            if(UsuarioId == null)
+                return true;
+
+            return false;
+        }
+
+        public void ReservarCartela(int idUsuario)
+        {
+            this.UsuarioId = idUsuario;
+        }
+
         public override bool EhValido()
         {
             ValidationResult = new CartelaValidation().Validate(this);

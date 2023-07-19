@@ -100,5 +100,15 @@ namespace TS.Core.Services
         {
             return _mapper.Map<List<CartelaViewModel>>(await _CartelaRepository.ObterTodosPorPremioId(idPremio));
         }
+
+        public async Task<CartelaViewModel> ObterPorId(int idCartela)
+        {
+            return _mapper.Map<CartelaViewModel>(await _CartelaRepository.ObterPorId(idCartela));
+        }
+
+        public async Task<Cartela> ObterCartelaPorId(int idCartela)
+        {
+            return await _CartelaRepository.ObterPorId(idCartela);
+        }
     }
 }

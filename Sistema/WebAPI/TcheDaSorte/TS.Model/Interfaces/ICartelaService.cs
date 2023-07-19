@@ -12,5 +12,7 @@ namespace TS.Model.Interfaces
         Task CriarCartelasParaPremio(int idPremio, int numeroCartelas, double preco);
         Cartela GerarCartelaRandomica(int idPremio, double preco);
         Task<List<CartelaViewModel>> ObterTodosPorPremioId(int idPremio);
+        Task<CartelaViewModel> ObterPorId(int idCartela);
+        Task<Cartela> ObterCartelaPorId(int idCartela);
     }
 }
