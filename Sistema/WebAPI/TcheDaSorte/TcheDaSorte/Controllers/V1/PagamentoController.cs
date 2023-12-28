@@ -19,7 +19,7 @@ namespace TS.API.Controllers.V1
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Authorize]
+    //[Authorize]
     [Route("v{version:apiVersion}/[controller]/[action]")]
     public class PagamentoController : MainController
     {
@@ -28,7 +28,7 @@ namespace TS.API.Controllers.V1
         private readonly IPremioService _premioService;
         private readonly ICartelaService _cartelaService;
         private readonly IUsuarioService _usuarioService;
-        private readonly IPagamento _pagamentoService;
+        private readonly IPagamentoService _pagamentoService;
 
         public PagamentoController(INotificador notificador,
             IUser user,
@@ -36,7 +36,7 @@ namespace TS.API.Controllers.V1
             IPremioService premioService,
             ICartelaService cartelaService,
             IUsuarioService usuarioService,
-            IPagamento pagamentoService,
+            IPagamentoService pagamentoService,
             ILogger<PagamentoController> logger) : base(notificador, user)
         {
             _logger = logger;
@@ -55,20 +55,19 @@ namespace TS.API.Controllers.V1
             if (cartela == null)
                 return SendBadRequest($"A cartela {idCartela} não foi encontrada.");
 
-            if(!cartela.DisponivelPraCompra())
-                return SendBadRequest($"A cartela {idCartela} não disponivel pra compra.");
+            //if(!cartela.DisponivelPraCompra())
+                //return SendBadRequest($"A cartela {idCartela} não disponivel pra compra.");
 
             var usuario = await _usuarioService.ObterPorIdIdentity(UsuarioId.ToString());
 
             cartela.ReservarCartela(usuario.Id);
 
-            await _cartelaService.Atualizar(cartela);
-
             //coloca na fila pra fazer a compra da cartela
             if (!_pagamentoService.PublicarPagamento(cartela)) {
-                cartela.RemoverReserva();
-                await _cartelaService.Atualizar(cartela);
+                return CustomResponse();
             }
+
+            await _cartelaService.Atualizar(cartela);
 
             return CustomResponse();
         }

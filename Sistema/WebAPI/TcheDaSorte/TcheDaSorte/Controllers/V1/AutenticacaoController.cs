@@ -50,6 +50,9 @@ namespace TS.API.Controllers.V1
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
 
+            if (registerUser.ConfirmPassword != registerUser.Password)
+                return SendBadRequest("As senhas não conferem.");
+
             var user = new IdentityUser
             {
                 UserName = registerUser.Email,
@@ -169,6 +172,26 @@ namespace TS.API.Controllers.V1
 
             return CustomResponse(users);
         }
+
+        [HttpGet(Name = "EAdmin")]
+        public async Task<ActionResult> EAdmin()
+        {
+            var userIdentity = await _userManager.FindByIdAsync(UsuarioId.ToString());
+
+            if (userIdentity == null)
+                return SendBadRequest($"O usuário não foi encontrado.");
+            
+            var usuario = await _usuarioService.ObterPorIdIdentity(userIdentity.Id);
+
+            if (usuario == null)
+                return SendBadRequest($"O usuário {userIdentity.Id} não foi encontrado.");
+
+            if (!await _usuarioService.EAdmin(usuario.Id))
+                return SendBadRequest("Não tem permissão.");
+
+            return CustomResponse();
+        }
+
 
         private async Task<LoginResponseViewModel> GerarJWT(string email)
         {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TS.Data.Context;
 
@@ -11,9 +12,10 @@ using TS.Data.Context;
 namespace TS.Data.Migrations
 {
     [DbContext(typeof(TSContext))]
-    partial class TSContextModelSnapshot : ModelSnapshot
+    [Migration("20230814222758_AddAdminUsuario")]
+    partial class AddAdminUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

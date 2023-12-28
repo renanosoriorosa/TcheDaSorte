@@ -98,5 +98,10 @@ namespace TS.Model.Models
             ValidationResult = new CartelaValidation().Validate(this);
             return ValidationResult.IsValid;
         }
+
+        public void ConfirmarPagamento()
+        {
+            this.CompraAprovada = true;
+        }
     }
 }

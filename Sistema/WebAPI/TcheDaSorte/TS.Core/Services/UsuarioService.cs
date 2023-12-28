@@ -66,5 +66,10 @@ namespace TS.Core.Services
         {
             _UsuarioRepository?.Dispose();
         }
+
+        public async Task<bool> EAdmin(int usuarioId)
+        {
+           return await _UsuarioRepository.EAdmin(usuarioId);
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace TS.Model.Interfaces
         Task<UsuarioViewModel> ObterPorId(int id);
         Task<UsuarioViewModel> ObterPorIdIdentity(string idIdentity);
         Task<List<UsuarioViewModel>> ObterTodos();
+        Task<bool> EAdmin(int usuarioId);
     }
 }

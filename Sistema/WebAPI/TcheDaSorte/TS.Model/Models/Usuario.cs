@@ -10,6 +10,7 @@ namespace TS.Model.Models
         public string Nome { get; private set; }
         public string IndentityId { get; private set; }
         public bool Ativo { get; private set; }
+        public bool Admin { get; private set; }
 
         public virtual ICollection<Cartela> Cartelas { get; }
 
@@ -22,6 +23,7 @@ namespace TS.Model.Models
             Nome = nome;
             IndentityId = indentityId;
             Ativo = true;
+            Admin = false;
         }
 
         public void Ativar()
