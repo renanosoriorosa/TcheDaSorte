@@ -40,10 +40,13 @@ namespace TS.Data.Repository
                 .ToListAsync();
         }
 
-        public async Task<List<Cartela>> ObterTodosPorPremioIdUsuario(int idUsuario)
+        public async Task<List<Cartela>> ObterTodosPorIdUsuario(int idUsuario,
+            int pagina, int tamanhoPagina)
         {
             return await _context.Cartela
                 .Where(x => x.UsuarioId == idUsuario)
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
                 .AsNoTracking()
                 .ToListAsync();
         }

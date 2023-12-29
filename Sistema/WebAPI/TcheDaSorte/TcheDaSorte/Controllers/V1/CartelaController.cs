@@ -32,10 +32,16 @@ namespace TS.API.Controllers.V1
             _cartelaService = cartelaService;
         }
 
-        [HttpGet("{idUsuario:int}")]
-        public async Task<ActionResult> ObterCartelasDoUsuario(int idUsuario)
+        [HttpGet()]
+        public async Task<ActionResult> ObterCartelasDoUsuario(
+            [FromQuery] int idUsuario,
+            [FromQuery] int pagina = 1,
+            [FromQuery] int tamanhoPagina = 10)
         {
-            var cartelas = await _cartelaService.ObterTodosPorPremioIdUsuario(idUsuario);
+            if (tamanhoPagina > 100)
+                return SendBadRequest("Tamanho da página é muito grande.");
+
+            var cartelas = await _cartelaService.ObterTodosPorIdUsuario(idUsuario, pagina, tamanhoPagina);
 
             return CustomResponse(cartelas);
         }

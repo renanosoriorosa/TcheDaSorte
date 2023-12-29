@@ -102,10 +102,22 @@ namespace TS.Core.Services
                 .ObterTodosPorPremioId(idPremio));
         }
 
-        public async Task<List<CartelaViewModel>> ObterTodosPorPremioIdUsuario(int idUsuario)
+        public async Task<ResponsePaginacaoViewModel<CartelaViewModel>> ObterTodosPorIdUsuario(
+            int idUsuario, 
+            int pagina, 
+            int tamanhoPagina)
         {
-            return _mapper.Map<List<CartelaViewModel>>(await _CartelaRepository
-                .ObterTodosPorPremioIdUsuario(idUsuario));
+            // Aplica a paginação
+            var totalItens = await TotalRegistros();
+            var totalPaginas = (int)Math.Ceiling(totalItens / (double)tamanhoPagina);
+
+            var cartelas = _mapper.Map<List<CartelaViewModel>>(
+                await _CartelaRepository
+                .ObterTodosPorIdUsuario(idUsuario, pagina, tamanhoPagina));
+
+            // Cria um objeto para retorno com os dados paginados
+            return new ResponsePaginacaoViewModel<CartelaViewModel>(totalItens,
+                totalPaginas, pagina, tamanhoPagina, cartelas);
         }
 
         public async Task<CartelaViewModel> ObterPorId(int idCartela)
@@ -122,6 +134,11 @@ namespace TS.Core.Services
         public async Task<Cartela> ObterCartelaPorId(int idCartela)
         {
             return await _CartelaRepository.ObterPorId(idCartela);
+        }
+
+        public async Task<int> TotalRegistros()
+        {
+            return await _CartelaRepository.TotalRegistros();
         }
     }
 }

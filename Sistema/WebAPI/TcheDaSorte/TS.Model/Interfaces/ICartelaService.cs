@@ -14,7 +14,10 @@ namespace TS.Model.Interfaces
         Task<List<CartelaViewModel>> ObterTodosPorPremioId(int idPremio);
         Task<CartelaViewModel> ObterPorId(int idCartela);
         Task<Cartela> ObterCartelaPorId(int idCartela);
-        Task<List<CartelaViewModel>> ObterTodosPorPremioIdUsuario(int idUsuario);
+        Task<ResponsePaginacaoViewModel<CartelaViewModel>> ObterTodosPorIdUsuario(
+            int idUsuario,
+            int pagina,
+            int tamanhoPagina);
         Task<CartelaViewModel> ObterTodosOsDadosPorId(int idCartela);
     }
 }
