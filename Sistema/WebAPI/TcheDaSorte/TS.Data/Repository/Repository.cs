@@ -40,6 +40,11 @@ namespace TS.Data.Repository
             return await DbSet.ToListAsync();
         }
 
+        public virtual async Task<int> TotalRegistros()
+        {
+            return await DbSet.CountAsync();
+        }
+
         public virtual async Task Adicionar(TEntity entity)
         {
             DbSet.Add(entity);

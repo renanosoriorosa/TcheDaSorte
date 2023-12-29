@@ -67,10 +67,15 @@ namespace TS.API.Controllers.V1
             return CustomResponse();
         }
 
-        [HttpGet(Name = "ListaPremiosDisponiveis")]
-        public async Task<ActionResult> ListaPremiosDisponiveis()
+        [HttpGet]
+        public async Task<ActionResult> ListaPremiosDisponiveis(
+            [FromQuery] int pagina = 1, 
+            [FromQuery] int tamanhoPagina = 10)
         {
-            var premios = await _premioService.ObterPremiosDisponiveisAsNoTracking();
+            if (tamanhoPagina > 100)
+                return SendBadRequest("Tamanho da página é muito grande.");
+
+            var premios = await _premioService.ObterPremiosDisponiveisAsNoTracking(pagina, tamanhoPagina);
 
             return CustomResponse(premios);
         }

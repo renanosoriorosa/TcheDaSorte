@@ -9,7 +9,9 @@ namespace TS.Model.Interfaces
         Task Atualizar(Premio premio);
         Task Remover(int id);
         bool CodigoExistente(string codigo);
-        Task<List<PremioViewModel>> ObterPremiosDisponiveisAsNoTracking();
+        Task<ResponsePaginacaoViewModel<PremioViewModel>> ObterPremiosDisponiveisAsNoTracking(
+            int pagina,
+            int tamanhoPagina);
         Task<PremioViewModel> ObterPremioECartelasAsNoTracking(int idPremio);
         Task<PremioViewModel> ObterPorIdAsNoTracking(int idPremio);
     }

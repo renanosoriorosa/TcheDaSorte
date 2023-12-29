@@ -7,7 +7,7 @@ namespace TS.Data.Interfaces
     {
         Task<Premio> ObterPorCodigo(string codigo);
         bool CodigoExistente(string codigo);
-        Task<List<Premio>> ObterPremiosDisponiveisAsNoTracking();
+        Task<List<Premio>> ObterPremiosDisponiveisAsNoTracking(int pagina, int tamanhoPagina);
         Task<Premio> ObterPremioECartelasAsNoTracking(int idPremio);
     }
 }

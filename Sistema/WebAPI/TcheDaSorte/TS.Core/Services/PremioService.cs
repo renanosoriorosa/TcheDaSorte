@@ -5,6 +5,7 @@ using TS.Models.Models.Validations;
 using AutoMapper;
 using TS.Model.Models;
 using TS.Model.Interfaces;
+using System.Linq;
 
 namespace TS.Core.Services
 {
@@ -51,9 +52,21 @@ namespace TS.Core.Services
             _PremioRepository?.Dispose();
         }
 
-        public async Task<List<PremioViewModel>> ObterPremiosDisponiveisAsNoTracking()
+        public async Task<ResponsePaginacaoViewModel<PremioViewModel>> ObterPremiosDisponiveisAsNoTracking(
+            int pagina, 
+            int tamanhoPagina)
         {
-            return _mapper.Map<List<PremioViewModel>>(await _PremioRepository.ObterPremiosDisponiveisAsNoTracking());
+            // Aplica a paginação
+            var totalItens = await TotalRegistros();
+            var totalPaginas = (int)Math.Ceiling(totalItens / (double)tamanhoPagina);
+
+            var premios = _mapper.Map<List<PremioViewModel>>(
+                await _PremioRepository
+                .ObterPremiosDisponiveisAsNoTracking(pagina, tamanhoPagina));
+
+            // Cria um objeto para retorno com os dados paginados
+            return new ResponsePaginacaoViewModel<PremioViewModel>(totalItens,
+                totalPaginas, pagina, tamanhoPagina, premios);
         }
 
         public async Task<PremioViewModel> ObterPremioECartelasAsNoTracking(int idPremio)
@@ -64,6 +77,11 @@ namespace TS.Core.Services
         public async Task<PremioViewModel> ObterPorIdAsNoTracking(int idPremio)
         {
             return _mapper.Map<PremioViewModel>(await _PremioRepository.ObterPorId(idPremio));
+        }
+
+        public async Task<int> TotalRegistros()
+        {
+            return await _PremioRepository.TotalRegistros();
         }
     }
 }

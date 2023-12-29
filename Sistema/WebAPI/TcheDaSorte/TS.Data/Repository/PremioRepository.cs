@@ -4,6 +4,7 @@ using TS.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using TS.Model.Models;
 using GP.Models.Enums;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TS.Data.Repository
 {
@@ -24,11 +25,13 @@ namespace TS.Data.Repository
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<Premio>> ObterPremiosDisponiveisAsNoTracking()
+        public async Task<List<Premio>> ObterPremiosDisponiveisAsNoTracking(int pagina, int tamanhoPagina)
         {
             return await _context.Premio
                 .Where(obj => obj.Status == PremioStatusEnum.Criado || 
                 obj.Status == PremioStatusEnum.Acumulado)
+                .Skip((pagina - 1) * tamanhoPagina)
+                .Take(tamanhoPagina)
                 .AsNoTracking()
                 .ToListAsync();
         }
