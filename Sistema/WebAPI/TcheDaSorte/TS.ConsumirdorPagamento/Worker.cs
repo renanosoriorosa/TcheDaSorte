@@ -12,89 +12,86 @@ namespace TS.ConsumirdorPagamento
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
+        private readonly IConfiguration Configuration;
         public IServiceProvider services { get; }
 
-        //private readonly IConfiguration Configuration;
-        //private readonly ICartelaService _cartelaService;
-
         public Worker(ILogger<Worker> logger,
-            //IConfiguration configuration,
-            //ICartelaService cartelaService,
+            IConfiguration configuration,
             IServiceProvider services)
         {
             _logger = logger;
             this.services = services;
-            //Configuration = configuration;
-            //_cartelaService = cartelaService;
+            Configuration = configuration;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            //var factoryScoped = services.GetRequiredService<IServiceScopeFactory>();
-
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
-                    //var URLRabbit = Configuration["Rabbit:URL"];
+                    var URLRabbit = Configuration["Rabbit:URL"];
 
-                    //var factory = new ConnectionFactory { HostName = URLRabbit };
-                    //using var connection = factory.CreateConnection();
-                    //using var channel = connection.CreateModel();
+                    var factory = new ConnectionFactory { HostName = URLRabbit };
+                    using var connection = factory.CreateConnection();
+                    using var channel = connection.CreateModel();
 
-                    //var consumer = new EventingBasicConsumer(channel);
-                    //consumer.Received += async (model, ea) =>
-                    //{
-                    //    try
-                    //    {
-                    //        var body = ea.Body.ToArray();
-                    //        var message = Encoding.UTF8.GetString(body);
+                    var consumeTaskCompletionSource = new TaskCompletionSource<bool>();
 
-                    //        JsonSerializerOptions options = new()
-                    //        {
-                    //            ReferenceHandler = ReferenceHandler.Preserve,
-                    //            WriteIndented = true
-                    //        };
-
-                    //        var cartelaFila = JsonSerializer.Deserialize<CartelaViewModel>(message, options);
-
-                    //        Console.WriteLine($" [x] Received {cartelaFila.Id},{cartelaFila.Codigo}, usuario {cartelaFila.UsuarioId} ");
-
-                    //        using (var scope = services.CreateScope())
-                    //        {
-                    //            var service = scope.ServiceProvider.GetRequiredService<ICartelaService>();
-
-                    //            var cartela = await service.ObterCartelaPorId(cartelaFila.Id);
-
-                    //            cartela.ConfirmarPagamento();
-
-                    //            await _cartelaService.Atualizar(cartela);
-                    //        }
-
-                    //        Console.WriteLine($" COMPRA APROVADA E EMAIL ENVIADO PRO CLIENTE ");
-
-                    //        channel.BasicAck(ea.DeliveryTag, false);
-                    //    }
-                    //    catch (Exception e)
-                    //    {
-                    //        Console.WriteLine($" FALHA : {e.Message}");
-                    //        //channel.BasicNack(ea.DeliveryTag, false, true);
-                    //    }
-                    //};
-
-                    //channel.BasicConsume(queue: "TS.Pagamento",
-                    //                     autoAck: false,
-                    //                     consumer: consumer);
-
-
-
-                    using (var scope = services.CreateScope())
+                    var consumer = new EventingBasicConsumer(channel);
+                    consumer.Received += async (model, ea) =>
                     {
-                        var service = scope.ServiceProvider.GetRequiredService<IPagamentoService>();
+                        try
+                        {
+                            var body = ea.Body.ToArray();
+                            var message = Encoding.UTF8.GetString(body);
 
-                        await service.ProcessarPagamentos();
-                        //await Task.Delay(10000);
-                    }
+                            JsonSerializerOptions options = new()
+                            {
+                                ReferenceHandler = ReferenceHandler.Preserve,
+                                WriteIndented = true
+                            };
+
+                            var cartelaFila = JsonSerializer.Deserialize<CartelaCompraViewModel>(message, options);
+
+                            Console.WriteLine($" [x] Received {cartelaFila.Id},{cartelaFila.Codigo}, usuario {cartelaFila.UsuarioId} ");
+
+                            using (var scope = services.CreateScope())
+                            {
+                                var pagamentoService = scope.ServiceProvider.GetRequiredService<IPagamentoService>();
+                                var usuarioService = scope.ServiceProvider.GetRequiredService<IUsuarioService>();
+
+                                var usuario = await usuarioService.ObterPorId(cartelaFila.UsuarioId);
+
+                                Console.WriteLine($"Processando pagamento para o usuario {usuario.Nome}...");
+
+                                await pagamentoService.ProcessarPagamento(cartelaFila);
+
+                                Console.WriteLine($" COMPRA APROVADA E EMAIL ENVIADO PRO CLIENTE {usuario.Nome}");
+                            }
+
+                            channel.BasicAck(ea.DeliveryTag, false);
+
+                            consumeTaskCompletionSource.SetResult(true);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($" FALHA : {e.Message}");
+                            channel.BasicNack(ea.DeliveryTag, false, true);
+                        }
+                    };
+
+                    channel.BasicConsume(queue: "TS.Pagamento",
+                                         autoAck: false,
+                                         consumer: consumer);
+
+                    await consumeTaskCompletionSource.Task;
+
+                    // Após o consumo ser finalizado, encerra a conexão e o canal
+                    connection.Close();
+                    channel.Close();
+
+                    await Task.Delay(1000);
                 }
                 catch (Exception e)
                 {

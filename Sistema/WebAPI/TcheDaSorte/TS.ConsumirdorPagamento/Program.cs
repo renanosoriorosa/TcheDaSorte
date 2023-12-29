@@ -20,7 +20,9 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddScoped<IPagamentoService, PagamentoService>();
         services.AddScoped<ICartelaService, CartelaService>();
         services.AddScoped<ICartelaRepository, CartelaRepository>();
-        // services.AddScoped<TSContext>();
+        services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<TSContext>();
 
         services.AddScoped<INotificador, Notificador>();
 

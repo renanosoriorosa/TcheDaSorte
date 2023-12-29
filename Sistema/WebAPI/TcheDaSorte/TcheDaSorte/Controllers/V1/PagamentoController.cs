@@ -61,13 +61,14 @@ namespace TS.API.Controllers.V1
             var usuario = await _usuarioService.ObterPorIdIdentity(UsuarioId.ToString());
 
             cartela.ReservarCartela(usuario.Id);
+            await _cartelaService.Atualizar(cartela);
 
             //coloca na fila pra fazer a compra da cartela
             if (!_pagamentoService.PublicarPagamento(cartela)) {
-                return CustomResponse();
+                cartela.RemoverReserva();
+                await _cartelaService.Atualizar(cartela);
+                return SendBadRequest("Falha ao testar realizar pagamento, tente novamente mais tarde.");
             }
-
-            await _cartelaService.Atualizar(cartela);
 
             return CustomResponse();
         }

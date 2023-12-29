@@ -32,57 +32,20 @@ namespace TS.Core.Services
             this.services = services;
         }
 
-        public async Task ProcessarPagamentos()
+        public async Task ProcessarPagamento(CartelaCompraViewModel cartelaFila)
         {
-            var URLRabbit = Configuration["Rabbit:URL"];
-
-            var factory = new ConnectionFactory { HostName = URLRabbit };
-            using var connection = factory.CreateConnection();
-            using var channel = connection.CreateModel();
-
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += async (model, ea) =>
+            try
             {
-                try
-                {
-                    var body = ea.Body.ToArray();
-                    var message = Encoding.UTF8.GetString(body);
+                var cartela = await _cartelaService.ObterCartelaPorId(cartelaFila.Id);
 
-                    JsonSerializerOptions options = new()
-                    {
-                        ReferenceHandler = ReferenceHandler.Preserve,
-                        WriteIndented = true
-                    };
+                cartela.ConfirmarPagamento();
 
-                    var cartelaFila = JsonSerializer.Deserialize<CartelaViewModel>(message, options);
-
-                    Console.WriteLine($" [x] Received {cartelaFila.Id},{cartelaFila.Codigo}, usuario {cartelaFila.UsuarioId} ");
-                    
-                    using (var scope = services.CreateScope())
-                    {
-                        var service = scope.ServiceProvider.GetRequiredService<ICartelaService>();
-
-                        var cartela = await service.ObterCartelaPorId(cartelaFila.Id);
-
-                        cartela.ConfirmarPagamento();
-
-                        await _cartelaService.Atualizar(cartela);
-                    }
-
-                    Console.WriteLine($"COMPRA APROVADA E EMAIL ENVIADO PRO CLIENTE ");
-
-                    channel.BasicAck(ea.DeliveryTag, false);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($" FALHA : {e.Message}");
-                    //channel.BasicNack(ea.DeliveryTag, false, true);
-                }
-            };
-
-            channel.BasicConsume(queue: "TS.Pagamento",
-                                 autoAck: false,
-                                 consumer: consumer);
+                await _cartelaService.Atualizar(cartela);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($" FALHA : {e.Message}");
+            }
         }
 
         public bool PublicarPagamento(Cartela cartela)
@@ -95,19 +58,18 @@ namespace TS.Core.Services
                 using var connection = factory.CreateConnection();
                 using var channel = connection.CreateModel();
 
-                //channel.QueueDeclare(queue: "Pagamento",
-                //                     durable: false,
-                //                     exclusive: false,
-                //                     autoDelete: false,
-                //                     arguments: null);
-
                 JsonSerializerOptions options = new()
                 {
                     ReferenceHandler = ReferenceHandler.Preserve,
                     WriteIndented = true
                 };
 
-                string message = JsonSerializer.Serialize(cartela, options);
+                var cartelaCompra = new CartelaCompraViewModel(cartela.Id, 
+                                        cartela.Codigo,
+                                        cartela.PremioId,
+                                        cartela.UsuarioId.Value);
+
+                string message = JsonSerializer.Serialize(cartelaCompra, options);
                 var body = Encoding.UTF8.GetBytes(message);
 
                 channel.BasicPublish(exchange: "TSExchange",
