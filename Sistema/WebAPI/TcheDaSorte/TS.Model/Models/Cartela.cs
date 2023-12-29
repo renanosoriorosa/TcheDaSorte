@@ -103,5 +103,14 @@ namespace TS.Model.Models
         {
             this.CompraAprovada = true;
         }
+
+        public bool ContemNumero(int numero)
+        {
+            return PrimeiroNumero == numero ||
+                   SegundoNumero == numero ||
+                   TerceiroNumero == numero ||
+                   QuartoNumero == numero ||
+                   QuintoNumero == numero;
+        }
     }
 }

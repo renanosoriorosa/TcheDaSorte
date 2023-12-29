@@ -12,14 +12,17 @@ namespace TS.Core.Services
     public class PremioService : BaseService, IPremioService
     {
         private readonly IPremioRepository _PremioRepository;
+        private readonly ICartelaService _cartelaService;
         private readonly IMapper _mapper;
 
         public PremioService(IPremioRepository PremioRepository,
                               IMapper mapper,
+                              ICartelaService cartelaService,
                               INotificador notificador) : base(notificador)
         {
             _PremioRepository = PremioRepository;
             _mapper = mapper;
+            _cartelaService = cartelaService;
         }
 
         public async Task Adicionar(Premio Premio)
@@ -67,6 +70,59 @@ namespace TS.Core.Services
             // Cria um objeto para retorno com os dados paginados
             return new ResponsePaginacaoViewModel<PremioViewModel>(totalItens,
                 totalPaginas, pagina, tamanhoPagina, premios);
+        }
+
+        public async Task<CartelaViewModel> SortearCartela(int idPremio)
+        {
+            var cartelasDisponiveis = await _cartelaService.ObterTodosDisponiveisPraSorteio(idPremio);
+
+            if (!cartelasDisponiveis.Any())
+            {
+                Notificar("Nenhuma Cartela está disponivél pra ser sorteada");
+                return null;
+            }
+
+            List<int> numerosSorteados = _cartelaService.GerarNumerosRandomicos(5);
+
+            var cartelaSorteada = SortearCartela(numerosSorteados, cartelasDisponiveis);
+
+            while (cartelaSorteada is null && numerosSorteados.Count < 10)
+            {
+                numerosSorteados.Add(GerarOutroNumeroRandomicoNaoSorteado(numerosSorteados));
+                cartelaSorteada = SortearCartela(numerosSorteados, cartelasDisponiveis);
+            }
+
+            if(cartelaSorteada is null)
+            {
+                Notificar("Nenhuma Cartela foi sorteada!");
+                return null;
+            }
+
+            return _mapper.Map<CartelaViewModel>(cartelaSorteada);
+        }
+
+        private int GerarOutroNumeroRandomicoNaoSorteado(List<int> numerosSorteados)
+        {
+            var novoNumero = _cartelaService.GerarNumerosRandomicos(1);
+
+            while (numerosSorteados.Contains(novoNumero.FirstOrDefault()))
+                novoNumero = _cartelaService.GerarNumerosRandomicos(1);
+
+            return novoNumero.FirstOrDefault();
+        }
+
+        private static Cartela SortearCartela(List<int> numeros, List<Cartela> cartelas)
+        {
+            foreach (var cartela in cartelas)
+            {
+                // Verifica se os 5 números da lista correspondem aos números da cartela
+                if (numeros.All(n => cartela.ContemNumero(n)))
+                {
+                    return cartela; // Se correspondem, retorna essa cartela
+                }
+            }
+
+            return null; // Retorna null se não encontrar nenhuma cartela com esses números
         }
 
         public async Task<PremioViewModel> ObterPremioECartelasAsNoTracking(int idPremio)

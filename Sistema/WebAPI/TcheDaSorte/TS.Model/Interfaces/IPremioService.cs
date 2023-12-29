@@ -14,5 +14,6 @@ namespace TS.Model.Interfaces
             int tamanhoPagina);
         Task<PremioViewModel> ObterPremioECartelasAsNoTracking(int idPremio);
         Task<PremioViewModel> ObterPorIdAsNoTracking(int idPremio);
+        Task<CartelaViewModel> SortearCartela(int idPremio);
     }
 }

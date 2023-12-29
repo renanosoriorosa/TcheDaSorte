@@ -68,7 +68,7 @@ namespace TS.Core.Services
                 );
         }
 
-        private List<int> GerarNumerosRandomicos(int quantidadeNumero)
+        public List<int> GerarNumerosRandomicos(int quantidadeNumero)
         {
             Random random = new Random();
             List<int> numeros = new List<int>();
@@ -139,6 +139,11 @@ namespace TS.Core.Services
         public async Task<int> TotalRegistros()
         {
             return await _CartelaRepository.TotalRegistros();
+        }
+
+        public async Task<List<Cartela>> ObterTodosDisponiveisPraSorteio(int idPremio)
+        {
+            return await _CartelaRepository.ObterTodosDisponiveisPraSorteio(idPremio);
         }
     }
 }

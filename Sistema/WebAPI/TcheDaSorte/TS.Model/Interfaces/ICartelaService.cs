@@ -19,5 +19,7 @@ namespace TS.Model.Interfaces
             int pagina,
             int tamanhoPagina);
         Task<CartelaViewModel> ObterTodosOsDadosPorId(int idCartela);
+        Task<List<Cartela>> ObterTodosDisponiveisPraSorteio(int idPremio);
+        List<int> GerarNumerosRandomicos(int quantidadeNumero);
     }
 }
