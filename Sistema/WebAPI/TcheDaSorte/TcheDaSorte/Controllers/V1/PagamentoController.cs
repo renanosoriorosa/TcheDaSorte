@@ -1,19 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using TS.API.Extensions;
 using TS.API.Interfaces;
-using TS.Model.ViewModels;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using TS.Core.Interfaces;
-using TS.Model.Models;
-using AutoMapper;
 using TS.Model.Interfaces;
-using TS.Core.Services;
 
 namespace TS.API.Controllers.V1
 {
@@ -64,7 +54,8 @@ namespace TS.API.Controllers.V1
             await _cartelaService.Atualizar(cartela);
 
             //coloca na fila pra fazer a compra da cartela
-            if (!_pagamentoService.PublicarPagamento(cartela)) {
+            if (!_pagamentoService.PublicarPagamento(cartela))
+            {
                 cartela.RemoverReserva();
                 await _cartelaService.Atualizar(cartela);
                 return SendBadRequest("Falha ao testar realizar pagamento, tente novamente mais tarde.");

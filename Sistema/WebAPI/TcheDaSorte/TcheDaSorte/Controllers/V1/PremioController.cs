@@ -1,18 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using TS.API.Extensions;
 using TS.API.Interfaces;
-using TS.Model.ViewModels;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using TS.Core.Interfaces;
-using TS.Model.Models;
-using AutoMapper;
 using TS.Model.Interfaces;
+using TS.Model.Models;
+using TS.Model.ViewModels;
 
 namespace TS.API.Controllers.V1
 {
@@ -69,7 +62,7 @@ namespace TS.API.Controllers.V1
 
         [HttpGet]
         public async Task<ActionResult> ListaPremiosDisponiveis(
-            [FromQuery] int pagina = 1, 
+            [FromQuery] int pagina = 1,
             [FromQuery] int tamanhoPagina = 10)
         {
             if (tamanhoPagina > 100)
