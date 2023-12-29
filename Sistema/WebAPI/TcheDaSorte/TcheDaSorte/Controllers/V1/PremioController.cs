@@ -18,7 +18,7 @@ namespace TS.API.Controllers.V1
 {
     [ApiController]
     [ApiVersion("1.0")]
-    //[Authorize]
+    [Authorize]
     [Route("v{version:apiVersion}/[controller]/[action]")]
     public class PremioController : MainController
     {

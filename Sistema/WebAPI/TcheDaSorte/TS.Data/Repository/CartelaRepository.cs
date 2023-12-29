@@ -3,6 +3,7 @@ using TS.Data.Interfaces;
 using TS.Models.Models;
 using Microsoft.EntityFrameworkCore;
 using TS.Model.Models;
+using TS.Model.ViewModels;
 
 namespace TS.Data.Repository
 {
@@ -37,6 +38,24 @@ namespace TS.Data.Repository
                 ))
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public async Task<List<Cartela>> ObterTodosPorPremioIdUsuario(int idUsuario)
+        {
+            return await _context.Cartela
+                .Where(x => x.UsuarioId == idUsuario)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<Cartela> ObterTodosOsDadosPorId(int idCartela)
+        {
+            return await _context.Cartela
+                .Where(x => x.Id == idCartela)
+                .Include(x => x.Premio)
+                .Include(x => x.Usuario)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
     }
 }

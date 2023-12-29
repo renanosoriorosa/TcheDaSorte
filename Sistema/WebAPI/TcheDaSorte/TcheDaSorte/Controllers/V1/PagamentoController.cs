@@ -19,7 +19,7 @@ namespace TS.API.Controllers.V1
 {
     [ApiController]
     [ApiVersion("1.0")]
-    //[Authorize]
+    [Authorize]
     [Route("v{version:apiVersion}/[controller]/[action]")]
     public class PagamentoController : MainController
     {
@@ -55,8 +55,8 @@ namespace TS.API.Controllers.V1
             if (cartela == null)
                 return SendBadRequest($"A cartela {idCartela} não foi encontrada.");
 
-            //if(!cartela.DisponivelPraCompra())
-                //return SendBadRequest($"A cartela {idCartela} não disponivel pra compra.");
+            if (!cartela.DisponivelPraCompra())
+                return SendBadRequest($"A cartela {idCartela} não disponivel pra compra.");
 
             var usuario = await _usuarioService.ObterPorIdIdentity(UsuarioId.ToString());
 

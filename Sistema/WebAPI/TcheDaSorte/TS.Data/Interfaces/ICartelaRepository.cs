@@ -7,5 +7,7 @@ namespace TS.Data.Interfaces
     {
         Task<Cartela> ObterPorPremioId(int idPremio);
         Task<List<Cartela>> ObterTodosPorPremioId(int idPremio);
+        Task<List<Cartela>> ObterTodosPorPremioIdUsuario(int idUsuario);
+        Task<Cartela> ObterTodosOsDadosPorId(int idCartela);
     }
 }
