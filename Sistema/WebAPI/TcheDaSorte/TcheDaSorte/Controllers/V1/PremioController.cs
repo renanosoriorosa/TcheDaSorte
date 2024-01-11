@@ -34,6 +34,7 @@ namespace TS.API.Controllers.V1
         }
 
         [HttpPost(Name = "Cadastrar")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Cadastrar(CadastroPremioViewModel cadastroPremio)
         {
             if (!ModelState.IsValid)

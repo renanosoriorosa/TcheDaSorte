@@ -108,7 +108,7 @@ namespace TS.Core.Services
             int tamanhoPagina)
         {
             // Aplica a paginação
-            var totalItens = await TotalRegistros();
+            var totalItens = await TotalRegistrosPorIdUsuario(idUsuario);
             var totalPaginas = (int)Math.Ceiling(totalItens / (double)tamanhoPagina);
 
             var cartelas = _mapper.Map<List<CartelaViewModel>>(
@@ -136,9 +136,9 @@ namespace TS.Core.Services
             return await _CartelaRepository.ObterPorId(idCartela);
         }
 
-        public async Task<int> TotalRegistros()
+        public async Task<int> TotalRegistrosPorIdUsuario(int idUsuario)
         {
-            return await _CartelaRepository.TotalRegistros();
+            return await _CartelaRepository.TotalRegistrosPorIdUsuario(idUsuario);
         }
 
         public async Task<List<Cartela>> ObterTodosDisponiveisPraSorteioAsNoTracking(int idPremio)

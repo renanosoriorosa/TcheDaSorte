@@ -11,5 +11,6 @@ namespace TS.Data.Interfaces
         Task<List<Cartela>> ObterTodosPorIdUsuario(int idUsuario,
             int pagina, int tamanhoPagina);
         Task<List<Cartela>> ObterTodosDisponiveisPraSorteioAsNoTracking(int idPremio);
+        Task<int> TotalRegistrosPorIdUsuario(int idUsuario);
     }
 }

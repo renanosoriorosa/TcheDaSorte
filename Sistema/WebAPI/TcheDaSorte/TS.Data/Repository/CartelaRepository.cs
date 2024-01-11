@@ -18,6 +18,13 @@ namespace TS.Data.Repository
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<int> TotalRegistrosPorIdUsuario(int idUsuario)
+        {
+            return await _context.Cartela
+                .Where(x =>x.UsuarioId == idUsuario)
+                .CountAsync();
+        }
+
         public async Task<List<Cartela>> ObterTodosPorPremioId(int idPremio)
         {
             return await _context.Cartela
