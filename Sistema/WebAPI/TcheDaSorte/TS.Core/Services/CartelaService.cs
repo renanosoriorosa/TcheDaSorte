@@ -141,9 +141,9 @@ namespace TS.Core.Services
             return await _CartelaRepository.TotalRegistros();
         }
 
-        public async Task<List<Cartela>> ObterTodosDisponiveisPraSorteio(int idPremio)
+        public async Task<List<Cartela>> ObterTodosDisponiveisPraSorteioAsNoTracking(int idPremio)
         {
-            return await _CartelaRepository.ObterTodosDisponiveisPraSorteio(idPremio);
+            return await _CartelaRepository.ObterTodosDisponiveisPraSorteioAsNoTracking(idPremio);
         }
     }
 }

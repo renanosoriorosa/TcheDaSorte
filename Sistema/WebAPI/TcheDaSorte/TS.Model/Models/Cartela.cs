@@ -104,13 +104,9 @@ namespace TS.Model.Models
             this.CompraAprovada = true;
         }
 
-        public bool ContemNumero(int numero)
+        public void SetarComoSorteada()
         {
-            return PrimeiroNumero == numero ||
-                   SegundoNumero == numero ||
-                   TerceiroNumero == numero ||
-                   QuartoNumero == numero ||
-                   QuintoNumero == numero;
+            Sorteada = true;
         }
     }
 }

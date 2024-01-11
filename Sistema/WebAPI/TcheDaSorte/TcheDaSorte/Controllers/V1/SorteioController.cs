@@ -24,9 +24,17 @@ namespace TS.API.Controllers.V1
             _premioService = premioService;
         }
 
-        [HttpPost("idPremio:int")]
+        [HttpPost]
         public async Task<ActionResult> Sortear(int idPremio)
         {
+            var premio = await _premioService.ObterPorIdAsNoTracking(idPremio);
+
+            if (premio is null)
+                return SendBadRequest($"Prêmio com o id {idPremio} não foi encontrado");
+
+            if (!premio.PodeSortear())
+                return SendBadRequest($"Prêmio com o id {idPremio} não pode ser sorteado");
+
             return CustomResponse(await _premioService.SortearCartela(idPremio));
         }
     }

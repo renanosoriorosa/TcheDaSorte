@@ -13,5 +13,6 @@ namespace TS.Data.Interfaces
         Task<IEnumerable<TEntity>> Buscar(Expression<Func<TEntity, bool>> predicate);
         Task<int> SaveChanges();
         Task<int> TotalRegistros();
+        Task<TEntity> ObterPorIdAsNoTracking(int id);
     }
 }

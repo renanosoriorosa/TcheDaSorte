@@ -74,7 +74,8 @@ namespace TS.Core.Services
 
         public async Task<CartelaViewModel> SortearCartela(int idPremio)
         {
-            var cartelasDisponiveis = await _cartelaService.ObterTodosDisponiveisPraSorteio(idPremio);
+            var cartelasDisponiveis = await _cartelaService
+                .ObterTodosDisponiveisPraSorteioAsNoTracking(idPremio);
 
             if (!cartelasDisponiveis.Any())
             {
@@ -94,7 +95,22 @@ namespace TS.Core.Services
 
             if(cartelaSorteada is null)
             {
-                Notificar("Nenhuma Cartela foi sorteada!");
+                
+            }
+
+            try
+            {
+                cartelaSorteada.SetarComoSorteada();
+                await _cartelaService.Atualizar(cartelaSorteada);
+
+                var premio = await _PremioRepository.ObterPorIdAsNoTracking(idPremio);
+                premio.SetaParaSorteado();
+                premio.SetarDadosSorteados(numerosSorteados);
+                await Atualizar(premio);
+            }
+            catch (Exception)
+            {
+                Notificar("Tivemos um problema para realizar o sorteoi, tente novamente.");
                 return null;
             }
 
@@ -115,8 +131,14 @@ namespace TS.Core.Services
         {
             foreach (var cartela in cartelas)
             {
+                var numeroCartela = new List<int> 
+                                    { cartela.PrimeiroNumero,
+                                        cartela.SegundoNumero,
+                                        cartela.TerceiroNumero, 
+                                        cartela.QuartoNumero,
+                                        cartela.QuintoNumero};
                 // Verifica se os 5 números da lista correspondem aos números da cartela
-                if (numeros.All(n => cartela.ContemNumero(n)))
+                if (numeroCartela.All(n => numeros.Contains(n)))
                 {
                     return cartela; // Se correspondem, retorna essa cartela
                 }
@@ -132,7 +154,7 @@ namespace TS.Core.Services
 
         public async Task<PremioViewModel> ObterPorIdAsNoTracking(int idPremio)
         {
-            return _mapper.Map<PremioViewModel>(await _PremioRepository.ObterPorId(idPremio));
+            return _mapper.Map<PremioViewModel>(await _PremioRepository.ObterPorIdAsNoTracking(idPremio));
         }
 
         public async Task<int> TotalRegistros()

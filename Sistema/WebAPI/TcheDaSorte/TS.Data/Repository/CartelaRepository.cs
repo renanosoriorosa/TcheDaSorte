@@ -40,9 +40,10 @@ namespace TS.Data.Repository
                 .ToListAsync();
         }
 
-        public async Task<List<Cartela>> ObterTodosDisponiveisPraSorteio(int idPremio)
+        public async Task<List<Cartela>> ObterTodosDisponiveisPraSorteioAsNoTracking(int idPremio)
         {
             return await _context.Cartela
+                .AsNoTracking()
                 .Where(obj => obj.PremioId == idPremio &&
                 obj.CompraAprovada == true)
                 .ToListAsync();

@@ -43,5 +43,30 @@ namespace TS.Model.Models
         //    ValidationResult = new PremioValidation(iPremioService).Validate(this);
         //    return ValidationResult.IsValid;
         //}
+
+        public void SetaParaSorteado()
+        {
+            Status = PremioStatusEnum.Sorteado;
+        }
+
+        public void SetarDadosSorteados(List<int> numerosSorteados)
+        {
+            for (int i = 0; i < numerosSorteados.Count; i++)
+            {
+                switch (i)
+                {
+                    case 0: PrimeiroNumero = numerosSorteados[i]; break;
+                    case 1: SegundoNumero = numerosSorteados[i]; break;
+                    case 2: TerceiroNumero = numerosSorteados[i]; break;
+                    case 3: QuartoNumero = numerosSorteados[i]; break;
+                    case 4: QuintoNumero = numerosSorteados[i]; break;
+                    case 5: SextoNumero = numerosSorteados[i]; break;
+                    case 6: SetimoNumero = numerosSorteados[i]; break;
+                    case 7: OitavoNumero = numerosSorteados[i]; break;
+                    case 8: NonoNumero = numerosSorteados[i]; break;
+                    case 9: DecimoNumero = numerosSorteados[i]; break;
+                }
+            }
+        }
     }
 }

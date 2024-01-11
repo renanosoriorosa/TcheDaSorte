@@ -26,5 +26,14 @@ namespace TS.Model.ViewModels
         public int DecimoNumero { get; set; }
 
         public List<CartelaViewModel> Cartelas { get; set; }
+
+        public bool PodeSortear()
+        {
+            if (Status == PremioStatusEnum.Acumulado ||
+                Status == PremioStatusEnum.Criado)
+                return true;
+
+            return false;
+        }
     }
 }
