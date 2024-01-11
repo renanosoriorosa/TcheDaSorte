@@ -95,7 +95,8 @@ namespace TS.Core.Services
 
             if(cartelaSorteada is null)
             {
-                
+                Notificar("Nenhuma cartela foi sorteada.");
+                return null;
             }
 
             try
