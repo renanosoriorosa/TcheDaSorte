@@ -27,5 +27,6 @@ namespace TS.Data.Context
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Premio> Premio { get; set; }
         public DbSet<Cartela> Cartela { get; set; }
+        public DbSet<RefreshToken> RefreshToken { get; set; }
     }
 }

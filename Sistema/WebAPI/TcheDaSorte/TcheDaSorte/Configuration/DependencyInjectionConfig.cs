@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using TS.API.Extensions;
 using TS.API.Interfaces;
+using TS.API.Services;
 using TS.Core.Interfaces;
 using TS.Core.Notificacoes;
 using TS.Core.Services;
@@ -21,6 +22,8 @@ namespace TS.API.Configuration
         public static IServiceCollection ResolveDependencies(this IServiceCollection services)
         {
             services.AddScoped<TSContext>();
+
+            services.AddScoped<AuthenticationService>();
 
             services.AddScoped<INotificador, Notificador>();
 

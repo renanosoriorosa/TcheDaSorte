@@ -12,6 +12,8 @@ using System.Text;
 using TS.Core.Interfaces;
 using TS.Model.Models;
 using TS.Model.Interfaces;
+using TS.API.Services;
+using Microsoft.OpenApi.Validations;
 
 namespace TS.API.Controllers.V1
 {
@@ -25,12 +27,15 @@ namespace TS.API.Controllers.V1
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
+        private readonly AuthenticationService _authenticationService;
         private readonly ILogger _logger;
         private readonly IUsuarioService _usuarioService;
 
         public AutenticacaoController(SignInManager<IdentityUser> signInManager, 
             UserManager<IdentityUser> userManager,
+            AuthenticationService authenticationService,
             IOptions<AppSettings> appSettings, 
+            IOptions<AppTokenSettings> appTokenSettings, 
             INotificador notificador, 
             IUser user,
             IUsuarioService usuarioService,
@@ -41,6 +46,7 @@ namespace TS.API.Controllers.V1
             _appSettings = appSettings.Value;
             _logger = logger;
             _usuarioService = usuarioService;
+            _authenticationService = authenticationService;
         }
 
         [AllowAnonymous]
@@ -192,6 +198,24 @@ namespace TS.API.Controllers.V1
             return CustomResponse();
         }
 
+        [AllowAnonymous]
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult> RefreshToken([FromBody] string refreshToken)
+        {
+            if (string.IsNullOrEmpty(refreshToken))
+            {
+                return SendBadRequest("Refresh Token inválido");
+            }
+
+            var token = await _authenticationService.ObterRefreshToken(Guid.Parse(refreshToken));
+
+            if (token is null)
+            {
+                return SendBadRequest("Refresh Token expirado");
+            }
+
+            return CustomResponse(await GerarJWT(token.UserName));
+        }
 
         private async Task<LoginResponseViewModel> GerarJWT(string email)
         {
@@ -227,9 +251,12 @@ namespace TS.API.Controllers.V1
 
             var encodedToken = tokenHandle.WriteToken(token);
 
+            var refreshToken = await _authenticationService.GerarRefreshToken(email);
+
             var response = new LoginResponseViewModel
             {
                 AccessToken = encodedToken,
+                RefreshToken = refreshToken.Token,
                 ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
                 UserToken = new UserTokenViewModel
                 {
